@@ -26,7 +26,10 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
   const addToCart = () => {
 
-    const existingCartsItems:string | null | productInterface[] | any   = JSON.parse(window.localStorage && window.localStorage.getItem('carts')  || '""');
+    let existingCartsItems:string | null | productInterface[] | any = []
+    if (typeof localStorage !== "undefined") {
+      existingCartsItems = JSON.parse(localStorage.getItem('carts')  || '""');
+    }
 
     let existingArrayCheck = existingCartsItems === "" ? [] : existingCartsItems;
 
@@ -42,7 +45,10 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
     }
 
-    window.localStorage && window.localStorage.setItem('carts', JSON.stringify([   { ...product, quantity}, ...existingArrayCheck,]));
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem('carts', JSON.stringify([   { ...product, quantity}, ...existingArrayCheck,]));
+    }
+
 
     toast({
       variant: "success",

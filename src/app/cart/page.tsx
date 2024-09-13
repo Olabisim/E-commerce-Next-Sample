@@ -17,9 +17,10 @@ export default function CartPage() {
 
 
   const router = useRouter()
-
-  const existingCartsItems:string | null | productInterface[] | any   = JSON.parse(window.localStorage && window.localStorage.getItem('carts')  || '""');
-  
+  let existingCartsItems:string | null | productInterface[] | any = []
+  if (typeof localStorage !== "undefined") {
+    existingCartsItems = JSON.parse(localStorage.getItem('carts')  || '""');
+  }
   
   const [cartItems, setCartItems] = useState(existingCartsItems)
   
@@ -40,30 +41,36 @@ export default function CartPage() {
   const total = cartItems.reduce((sum:number, item:productInterface) => sum + item.price *  item.quantity, 0)
 
   const handleProceedtoCheckout = () => {
-    
-    window.localStorage && window.localStorage.setItem('carts', JSON.stringify([...cartItems]));
-    router.push('/checkout')
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem('carts', JSON.stringify([...cartItems]));
+      router.push('/checkout')
+    }
   }
 
   const handleResetCart = () => {
     
-    window.localStorage && window.localStorage.setItem('carts', JSON.stringify([]));
-    setCartItems([])
-    toast({
-      variant: "success",
-      title: "cart cleared",
-      description: "successfully",
-    })
-    router.push('/')
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem('carts', JSON.stringify([]));
+      setCartItems([])
+      toast({
+        variant: "success",
+        title: "cart cleared",
+        description: "successfully",
+      })
+      router.push('/')
+    }
   }
 
   const handleSaveCart = () => {
-    window.localStorage && window.localStorage.setItem('carts', JSON.stringify([...cartItems]));
-    toast({
-      variant: "success",
-      title: "Cart saved add more carts",
-      description: "successfully",
-    })
+    
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem('carts', JSON.stringify([...cartItems]));
+      toast({
+        variant: "success",
+        title: "Cart saved add more carts",
+        description: "successfully",
+      })
+    }
 
   }
 
