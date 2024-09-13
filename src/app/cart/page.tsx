@@ -18,7 +18,7 @@ export default function CartPage() {
 
   const router = useRouter()
 
-  const existingCartsItems:string | null | productInterface[] | any   = JSON.parse(localStorage && localStorage.getItem('carts')  || '""');
+  const existingCartsItems:string | null | productInterface[] | any   = JSON.parse(window.localStorage && window.localStorage.getItem('carts')  || '""');
   
   
   const [cartItems, setCartItems] = useState(existingCartsItems)
@@ -41,13 +41,13 @@ export default function CartPage() {
 
   const handleProceedtoCheckout = () => {
     
-    localStorage && localStorage.setItem('carts', JSON.stringify([...cartItems]));
+    window.localStorage && window.localStorage.setItem('carts', JSON.stringify([...cartItems]));
     router.push('/checkout')
   }
 
   const handleResetCart = () => {
     
-    localStorage && localStorage.setItem('carts', JSON.stringify([]));
+    window.localStorage && window.localStorage.setItem('carts', JSON.stringify([]));
     setCartItems([])
     toast({
       variant: "success",
@@ -58,7 +58,7 @@ export default function CartPage() {
   }
 
   const handleSaveCart = () => {
-    localStorage && localStorage.setItem('carts', JSON.stringify([...cartItems]));
+    window.localStorage && window.localStorage.setItem('carts', JSON.stringify([...cartItems]));
     toast({
       variant: "success",
       title: "Cart saved add more carts",

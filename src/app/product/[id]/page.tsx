@@ -26,7 +26,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
   const addToCart = () => {
 
-    const existingCartsItems:string | null | productInterface[] | any   = JSON.parse(localStorage && localStorage.getItem('carts')  || '""');
+    const existingCartsItems:string | null | productInterface[] | any   = JSON.parse(window.localStorage && window.localStorage.getItem('carts')  || '""');
 
     let existingArrayCheck = existingCartsItems === "" ? [] : existingCartsItems;
 
@@ -42,7 +42,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
     }
 
-    localStorage && localStorage.setItem('carts', JSON.stringify([   { ...product, quantity}, ...existingArrayCheck,]));
+    window.localStorage && window.localStorage.setItem('carts', JSON.stringify([   { ...product, quantity}, ...existingArrayCheck,]));
 
     toast({
       variant: "success",
