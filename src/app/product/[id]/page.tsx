@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { products } from '@/utils/products'
 import Link from 'next/link'
+import { Goback } from '@/components/Goback'
 
 
 export default function ProductPage({ params }: { params: { id: string } }) {
@@ -24,6 +25,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
   return (
     <>
+    
+    <span><Goback gobacklink='/' /></span>
+    
     <div className="flex flex-col md:flex-row gap-8">
       <div className="md:w-1/2">
         <img src={product.image} alt={product.name} className="w-full h-auto rounded-lg" />
