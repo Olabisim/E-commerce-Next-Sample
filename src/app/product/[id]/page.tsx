@@ -5,11 +5,18 @@ import { useRouter } from 'next/navigation'
 import { products } from '@/utils/products'
 import Link from 'next/link'
 import { Goback } from '@/components/Goback'
+import { useToast } from '@/hooks/use-toast'
+import { productInterface } from '@/interfaces/main'
+
+
+
+
 
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const router = useRouter()
   const [quantity, setQuantity] = useState(1)
+  const { toast }:any = useToast()
   
   const product = products.find(p => p.id === parseInt(params.id))
   
@@ -18,14 +25,38 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   }
 
   const addToCart = () => {
+
+    const existingCartsItems:string | null | productInterface[] | any   = JSON.parse(localStorage.getItem('carts')  || '""');
+
+    let existingArrayCheck = existingCartsItems === "" ? [] : existingCartsItems;
+
+    if(existingArrayCheck.find((x: productInterface) => x.id == product.id)) {
+      
+      toast({
+        variant: "success",
+        title: "product already added to cart",
+        description: "successfully",
+      })
+
+      return 
+
+    }
+
+    localStorage.setItem('carts', JSON.stringify([   { ...product, quantity}, ...existingArrayCheck,]));
+
+    toast({
+      variant: "success",
+      title: "added product to cart",
+      description: "successfully",
+    })
     // In a real app, you'd update the cart state here
     console.log(`Added ${quantity} of ${product.name} to cart`)
-    router.push('/cart')
+    // router.push('/cart')
   }
 
   return (
     <>
-    
+
     <span><Goback gobacklink='/' /></span>
     
     <div className="flex flex-col md:flex-row gap-8">
