@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { products } from '@/utils/products'
+import { GrFormView } from "react-icons/gr";
 
 export default function Home() {
   return (
@@ -18,6 +19,12 @@ export default function Home() {
             </div>
             <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
             <p className="mt-1 text-lg font-medium text-gray-900">${product.price}</p>
+            <div>
+              
+            <span className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 inline-flex">
+              <GrFormView /> View Product
+            </span>
+            </div>
           </Link>
         ))}
       </div>
