@@ -1,5 +1,5 @@
 export interface productInterface {
-    quantity?: number, 
+    quantity: number, 
     id: number,
     description: string, 
     image: string, 

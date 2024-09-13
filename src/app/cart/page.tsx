@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { productInterface } from '@/interfaces/main'
+import { useRouter } from 'next/navigation'
 
 // In a real app, this would come from a global state or context
 const initialCartItems = [
@@ -10,19 +12,34 @@ const initialCartItems = [
 ]
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState(initialCartItems)
+
+
+  const router = useRouter()
+
+  const existingCartsItems:string | null | productInterface[] | any   = JSON.parse(localStorage.getItem('carts')  || '""');
+  
+  
+  const [cartItems, setCartItems] = useState(existingCartsItems)
+
+  
 
   const removeFromCart = (id: number) => {
-    setCartItems(cartItems.filter(item => item.id !== id))
+    setCartItems(cartItems.filter((item:productInterface) => item.id !== id))
   }
 
   const updateQuantity = (id: number, newQuantity: number) => {
-    setCartItems(cartItems.map(item => 
+    setCartItems(cartItems.map((item:productInterface) => 
       item.id === id ? { ...item, quantity: newQuantity } : item
     ))
   }
 
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const total = cartItems.reduce((sum:number, item:productInterface) => sum + item.price *  item.quantity, 0)
+
+  const handleProceedtoCheckout = () => {
+    
+    localStorage.setItem('carts', JSON.stringify([...cartItems]));
+    router.push('/checkout')
+  }
 
   return (
     <div>
@@ -32,7 +49,7 @@ export default function CartPage() {
       ) : (
         <>
           <ul className="divide-y divide-gray-200">
-            {cartItems.map((item) => (
+            {cartItems.map((item:productInterface) => (
               <li key={item.id} className="py-4 flex">
                 <div className="flex-grow">
                   <h2 className="text-lg font-medium text-gray-900">{item.name}</h2>
@@ -58,9 +75,9 @@ export default function CartPage() {
           </ul>
           <div className="mt-8">
             <p className="text-xl font-bold">Total: ${total}</p>
-            <Link href="/checkout" className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <button onClick={handleProceedtoCheckout} className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
               Proceed to Checkout
-            </Link>
+            </button>
           </div>
         </>
       )}
