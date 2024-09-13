@@ -4,6 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { productInterface } from '@/interfaces/main'
 import { useRouter } from 'next/navigation'
+import { Goback } from '@/components/Goback'
+import { useToast } from '@/hooks/use-toast'
 
 // In a real app, this would come from a global state or context
 const initialCartItems = [
@@ -20,6 +22,8 @@ export default function CartPage() {
   
   
   const [cartItems, setCartItems] = useState(existingCartsItems)
+  
+  const { toast }:any = useToast()
 
   
 
@@ -41,9 +45,55 @@ export default function CartPage() {
     router.push('/checkout')
   }
 
+  const handleResetCart = () => {
+    
+    localStorage.setItem('carts', JSON.stringify([]));
+    setCartItems([])
+    toast({
+      variant: "success",
+      title: "cart cleared",
+      description: "successfully",
+    })
+    router.push('/')
+  }
+
+  const handleSaveCart = () => {
+    localStorage.setItem('carts', JSON.stringify([...cartItems]));
+    toast({
+      variant: "success",
+      title: "Cart saved add more carts",
+      description: "successfully",
+    })
+
+  }
+
   return (
     <div>
+
+      
+    <span><Goback gobacklink='/' /></span>
+
+
+      <div className="flex justify-between items-center">
+
       <h1 className="text-3xl font-bold mb-4">Your Cart</h1>
+
+      <div>
+        {
+          cartItems.length != 0 
+          &&
+            <>
+            <button onClick={handleResetCart} className="mx-2 mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Clear
+            </button>
+            <button onClick={handleSaveCart} className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Save
+            </button>
+            </>
+        }
+      </div>
+
+      </div>
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
