@@ -1,11 +1,6 @@
 import Link from 'next/link'
 
-const products = [
-  { id: 1, name: 'Basic Tee', price: 35, image: '../top.jpg' },
-  { id: 2, name: 'Fancy Pants', price: 60, image: '../top.jpg' },
-  { id: 3, name: 'Cool Hoodie', price: 75, image: '../top.jpg' },
-  // Add more products as needed
-]
+import { products } from '@/utils/products'
 
 export default function Home() {
   return (
